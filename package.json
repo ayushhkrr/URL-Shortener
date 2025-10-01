@@ -1,8 +1,8 @@
 {
-  "name": "random-3",
+  "name": "random-4",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
+  "type":"module",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon app.js"

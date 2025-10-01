@@ -2,38 +2,32 @@ import express from "express";
 import mongoose from "mongoose";
 import shortid from "shortid";
 import dotenv from "dotenv";
-
-import Url from "./models/url.js";
-
-dotenv.config();
-
+import Url from "./Models/URL.js";
 const app = express();
-
-const PORT = process.env.PORT || 5000;
-
 app.use(express.json());
-
+dotenv.config();
+const PORT = process.env.PORT;
 const connectdb = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB Connected");
+    await mongoose.connect(process.env.MONGO_DB);
+    console.log("Mongodb Connected");
   } catch (err) {
     console.error(err.message);
   }
 };
-
 connectdb();
-app.post("/shortener", async (req, res) => {
+
+app.post("/shorten", async (req, res) => {
   const { longUrl } = req.body;
-  const baseUrl = `http://localhost:${process.env.PORT}`;
+  
 
   try {
-    let url = await Url.findOne({ longUrl });
+    let url = await Url.findOne({longUrl});
     if (url) {
-      res.json(url);
+      return res.send(url);
     } else {
-      const urlCode = shortid.generate();
-      const shortUrl = `${baseUrl}/${urlCode}`;
+      let urlCode = shortid.generate();
+      let shortUrl = `${process.env.BASE_URL}/${urlCode}`;
       url = new Url({
         longUrl,
         shortUrl,
@@ -41,48 +35,52 @@ app.post("/shortener", async (req, res) => {
         date: new Date(),
       });
       await url.save();
-      res.json(url);
+      res.status(201).json(url);
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json("Server error");
+    console.error(err.message);
+    res.status(500).json({error:"Invalid Request"});
   }
 });
-app.get("/all-links", async (req, res) => {
-  try {
-    const allLinks = await Url.find({});
-    res.json(allLinks);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Invalid request" });
-  }
-});
-app.get("/:transfer", async (req, res) => {
-  try {
-    const url = await Url.findOne({ urlCode: req.params.transfer });
-    if (url) {
-      return res.redirect(url.longUrl);
-    } else {
-      return res.status(404).json("Url Not Found");
+
+    app.get('/all', async(req, res)=>{
+      try{
+        const links = await Url.find({})
+        res.json(links)
+      }catch(err){
+        console.error(err)
+        res.status(500).json('Server Error')
+      }
+    })
+
+app.get('/:redirect', async(req, res)=>{
+  try{
+    const url = await Url.findOne({urlCode: req.params.redirect})
+    if(url){
+     return res.redirect(url.longUrl)
+    }else{
+     return res.status(404).json('Url Not Found')
     }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json("server error");
+  }catch(err){
+    console.error(err)
+    res.status(500).json('server error')
   }
-});
-app.delete("/delete/:id", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const deleteUrl = await Url.findByIdAndDelete(id);
-    if (!deleteUrl) {
-      return res.status(404).json({ message: "URL not found" });
-    }
-    res.json({ message: "Url Sucessfully Deleted" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ errror: "Server Error" });
-  }
-});
+})
+
+app.delete('/:id', async(req, res)=>{
+      try{
+        const id = await Url.findByIdAndDelete(req.params.id)
+        if (id){
+         return res.status(200).json({message: 'Yay Url Got Deleted'})
+        }else{
+          return res.status(404).json('Not Found')
+        }
+      }catch(err){
+        console.error(err)
+        res.status(500).json('Server Error')
+      }
+})
+
 app.listen(PORT, () => {
-  console.log(`The server is running on port ${PORT}`);
+  console.log(`The server is running on PORT ${PORT}`);
 });
