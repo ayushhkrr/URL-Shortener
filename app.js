@@ -19,10 +19,9 @@ connectdb();
 
 app.post("/shorten", async (req, res) => {
   const { longUrl } = req.body;
-  
 
   try {
-    let url = await Url.findOne({longUrl});
+    let url = await Url.findOne({ longUrl });
     if (url) {
       return res.send(url);
     } else {
@@ -39,47 +38,47 @@ app.post("/shorten", async (req, res) => {
     }
   } catch (err) {
     console.error(err.message);
-    res.status(500).json({error:"Invalid Request"});
+    res.status(500).json({ error: "Invalid Request" });
   }
 });
 
-    app.get('/all', async(req, res)=>{
-      try{
-        const links = await Url.find({})
-        res.json(links)
-      }catch(err){
-        console.error(err)
-        res.status(500).json('Server Error')
-      }
-    })
-
-app.get('/:redirect', async(req, res)=>{
-  try{
-    const url = await Url.findOne({urlCode: req.params.redirect})
-    if(url){
-     return res.redirect(url.longUrl)
-    }else{
-     return res.status(404).json('Url Not Found')
-    }
-  }catch(err){
-    console.error(err)
-    res.status(500).json('server error')
+app.get("/all", async (req, res) => {
+  try {
+    const links = await Url.find({});
+    res.json(links);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Server Error");
   }
-})
+});
 
-app.delete('/:id', async(req, res)=>{
-      try{
-        const id = await Url.findByIdAndDelete(req.params.id)
-        if (id){
-         return res.status(200).json({message: 'Yay Url Got Deleted'})
-        }else{
-          return res.status(404).json('Not Found')
-        }
-      }catch(err){
-        console.error(err)
-        res.status(500).json('Server Error')
-      }
-})
+app.get("/:redirect", async (req, res) => {
+  try {
+    const url = await Url.findOne({ urlCode: req.params.redirect });
+    if (url) {
+      return res.redirect(url.longUrl);
+    } else {
+      return res.status(404).json("Url Not Found");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("server error");
+  }
+});
+
+app.delete("/:id", async (req, res) => {
+  try {
+    const id = await Url.findByIdAndDelete(req.params.id);
+    if (id) {
+      return res.status(200).json({ message: "Yay Url Got Deleted" });
+    } else {
+      return res.status(404).json("Not Found");
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json("Server Error");
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`The server is running on PORT ${PORT}`);
