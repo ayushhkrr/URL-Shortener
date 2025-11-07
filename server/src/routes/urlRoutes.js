@@ -5,6 +5,6 @@ const routes = express.Router();
 
 routes.post("/", createUrl);
 
-routes.get("/:redirect", redirect);
+routes.get("/:urlCode", redirect);
 
 export default routes;
