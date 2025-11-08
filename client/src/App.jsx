@@ -48,9 +48,11 @@ function App() {
       return;
     }
 
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:5000/api', {
+      const response = await fetch(`${apiUrl}/api`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +66,7 @@ function App() {
         throw new Error(data.message || 'Failed to shorten URL');
       }
 
-      setShortUrl(`http://localhost:5000/api/${data.urlCode}`);
+      setShortUrl(`${apiUrl}/api/${data.urlCode}`);
     } catch (err) {
       setError(err.message || 'Something went wrong');
     } finally {
@@ -97,7 +99,7 @@ function App() {
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-3 min-h-16">
               {welcomeText}
             </h1>
-            <p className="text-base md:text-lg text-white/70 min-h-8">
+            <p className="text-base md:text-lg text-white/90 min-h-8">
               {subtitleText}
               {subtitleText.length < fullSubtitle.length && (
                 <span className="animate-blink">|</span>
@@ -114,7 +116,7 @@ function App() {
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   placeholder="Enter your URL..."
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded text-white placeholder-white/50 focus:outline-none focus:border-white/40 transition-colors"
+                  className="w-full px-4 py-3 bg-white/10 border-2 border-white/60 rounded text-white placeholder-white/70 focus:outline-none focus:border-white transition-colors"
                   disabled={loading}
                 />
               </div>
@@ -122,7 +124,7 @@ function App() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-white text-black font-medium py-3 px-4 rounded hover:bg-white/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white text-black font-semibold py-3 px-4 rounded hover:bg-gray-100 transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {loading ? (
                   <span className="flex items-center justify-center">
@@ -150,25 +152,25 @@ function App() {
               </button>
 
               {error && (
-                <div className="text-white/70 text-sm px-4 py-2">
+                <div className="text-white/90 text-sm px-4 py-2">
                   {error}
                 </div>
               )}
 
               {shortUrl && (
-                <div className="rounded p-4 border border-white/20 animate-fadeIn">
-                  <p className="text-white/70 text-xs mb-2">Shortened URL</p>
+                <div className="rounded p-4 border-2 border-white/40 animate-fadeIn">
+                  <p className="text-white/90 text-xs mb-2">Shortened URL</p>
                   <div className="flex items-center gap-2">
                     <input
                       type="text"
                       value={shortUrl}
                       readOnly
-                      className="flex-1 bg-white/10 border border-white/20 rounded px-3 py-2 text-white text-sm focus:outline-none"
+                      className="flex-1 bg-white/10 border-2 border-white/40 rounded px-3 py-2 text-white text-sm focus:outline-none"
                     />
                     <button
                       type="button"
                       onClick={handleCopy}
-                      className="bg-white text-black px-4 py-2 rounded text-sm hover:bg-white/90 transition-colors font-medium"
+                      className="bg-white text-black px-4 py-2 rounded text-sm hover:bg-gray-100 transition-all font-semibold hover:shadow-lg"
                     >
                       {copied ? 'Copied!' : 'Copy'}
                     </button>
@@ -184,17 +186,17 @@ function App() {
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
           {/* Easy Feature */}
-          <div className="bg-white/5 rounded-lg p-6 border border-white/10 text-center">
+          <div className="bg-white/5 rounded-lg p-6 border border-white/20 text-center">
             <h3 className="text-lg font-medium text-white mb-2">Easy</h3>
-            <p className="text-white/60 text-sm">
+            <p className="text-white/80 text-sm">
               Enter the long link to get your shortened link
             </p>
           </div>
 
           {/* Shortened Feature */}
-          <div className="bg-white/5 rounded-lg p-6 border border-white/10 text-center">
+          <div className="bg-white/5 rounded-lg p-6 border border-white/20 text-center">
             <h3 className="text-lg font-medium text-white mb-2">Shortened</h3>
-            <p className="text-white/60 text-sm">
+            <p className="text-white/80 text-sm">
               Use any link, ShortURL always shortens
             </p>
           </div>
