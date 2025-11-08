@@ -85,16 +85,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex flex-col">
-      {/* Header Logo */}
+    <div className="min-h-screen bg-linear-to-br from-gray-950 via-black to-gray-950 flex flex-col">
+      
       <header className="absolute top-6 left-6 flex items-center gap-2">
         <h2 className="text-lg font-medium text-white">URL Shortener</h2>
       </header>
 
-      {/* Main Content */}
+      
       <div className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-2xl">
-          {/* Typing Animation Header */}
+        
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-semibold text-white mb-3 min-h-16">
               {welcomeText}
@@ -107,7 +107,7 @@ function App() {
             </p>
           </div>
 
-          {/* URL Shortener Card */}
+          
           <div className="bg-white/5 rounded-lg p-6 border border-white/10">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -182,19 +182,19 @@ function App() {
         </div>
       </div>
 
-      {/* Features Section */}
+      
       <section className="py-12 px-4">
         <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-          {/* Easy Feature */}
-          <div className="bg-white/5 rounded-lg p-6 border border-white/20 text-center">
+          
+          <div className="bg-white/5 rounded-lg p-6 border-2 border-white/60 text-center">
             <h3 className="text-lg font-medium text-white mb-2">Easy</h3>
             <p className="text-white/80 text-sm">
               Enter the long link to get your shortened link
             </p>
           </div>
 
-          {/* Shortened Feature */}
-          <div className="bg-white/5 rounded-lg p-6 border border-white/20 text-center">
+          
+          <div className="bg-white/5 rounded-lg p-6 border-2 border-white/60 text-center">
             <h3 className="text-lg font-medium text-white mb-2">Shortened</h3>
             <p className="text-white/80 text-sm">
               Use any link, ShortURL always shortens
@@ -203,7 +203,7 @@ function App() {
         </div>
       </section>
 
-      {/* Footer */}
+      
       <footer className="py-6 text-center">
         <p className="text-white text-lg font-bold">
           MADE WITH 🤍
