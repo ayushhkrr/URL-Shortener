@@ -8,7 +8,7 @@ import cors from 'cors'
 
 const app = express();
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://url-shortener-eight-pink.vercel.app'],
+  origin: ['http://localhost:5173', 'https://u-inventor.vercel.app'],
   credentials: true
 }))
 app.use(express.json());
